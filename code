@@ -1,0 +1,215 @@
+#include<stdio.h>
+#include<conio.h>
+#include<alloc.h>
+void create_list(int);
+void add_beg(int);
+void add_after(int,int);
+void display();
+void search(int);
+void count();
+void rev();
+void del();
+struct node
+{
+int info;
+struct node *link;
+}*start;
+void main()
+{
+int ch,n,m,pos,i;
+clrscr();
+start=NULL;
+while(1)
+{
+printf("\n\t1.Create List\n\t2.Add at Begining\n\t3.Add After\n\t4.Display\n\t5.Search\n\t6.Quit\n\t7.Count\n\t8.Reverse\n\t9.Delete");
+printf("\n\tEnter the choice");
+scanf("\t%d", &ch);
+switch(ch)
+{
+case 1:printf("\n\tHow many nodes u want?");
+       scanf("\t%d", &n);
+       for(i=0;i<n;i++)
+       {
+       printf("\n\tEnter the element");
+       scanf("\t%d", &m);
+       create_list(m);
+       }
+       break;
+case 2:printf("\n\tEnter the element");
+       scanf("\t%d", &m);
+       add_beg(m);
+       break;
+case 3:printf("\n\tEnter the element");
+       scanf("\t%d", &m);
+       printf("\n\tEnter the position");
+       scanf("\t%d",&pos);
+       add_after(m,pos);
+       break;
+case 4:display();
+       break;
+case 5:printf("\n\tEnter the elements to be searched");
+       scanf("\t%d", &m);
+       search(m);
+       break;
+case 6:exit();
+       break;
+case 7:count();
+       break;
+case 8:rev();
+       break;
+case 9:printf("\n\tEnter the element to be deleted");
+       scanf("%d", &m);
+       del(m);
+       break;
+default:printf("\n\tWrong choice");
+}
+}
+}
+void create_list(int data)
+{
+struct node *q,*tmp;
+tmp=malloc(sizeof(struct node));
+tmp->info=data;
+tmp->link=NULL;
+if(start==NULL)
+start=tmp;
+else
+{
+q=start;
+while(q->link!=NULL)
+q=q->link;
+q->link=tmp;
+}
+}
+void add_beg(int data)
+{
+struct node *tmp;
+tmp=malloc(sizeof(struct node));
+tmp->info=data;
+tmp->link=start;
+start=tmp;
+}
+void add_after(int data, int position)
+{
+struct node *q, *tmp;
+int i;
+q=start;
+for(i=0;i<position;i++)
+{
+q=q->link;
+}
+if(q==NULL)
+printf("\n\tThere are less than %d elements", position);
+else
+{
+tmp=malloc(sizeof(struct node));
+tmp->info=data;
+tmp->link=q->link;
+q->link=tmp;
+}
+
+}
+void display()
+{
+struct node *q;
+if(start==NULL)
+{
+printf("\n\tList is empty");
+return;
+}
+q=start;
+printf("\n\tList is:");
+while(q!=NULL)
+{
+printf("%d", q->info);
+q=q->link;
+printf("\n\t");
+}
+}
+void search(int data)
+{
+int pos=1;
+struct node *q;
+q=start;
+while(q!=NULL)
+{
+if(q->info==data)
+{
+printf("\n\tElement searched %d at %d", data,pos);
+return;
+}
+else
+q=q->link;
+pos++;
+}
+if(q==NULL)
+printf("\n\tItem %d not found in the list \n", data);
+}
+void count()
+{int cnt=0;
+struct node *q;
+q=start;
+while(q!=NULL)
+{
+q=q->link;
+cnt++;
+}
+printf("Number of elements are %d\n", cnt);
+}
+void rev()
+{
+struct node *p1,*p2,*p3;
+if(start->link==NULL)
+return;
+p1=start;
+p2=p1->link;
+p3=p2->link;
+p1->link=NULL;
+p2->link=p1;
+while(p3!=NULL)
+{
+p1=p2;
+p2=p3;
+p3=p3->link;
+p2->link=p1;
+}
+start=p2;
+}
+void del(int data)
+{
+if(start==NULL)
+{
+printf("List is empty");
+}
+else
+{
+struct node *tmp, *q;
+if(start->info==data)
+{tmp=start;
+start=start->link;
+free(tmp);
+return;
+}
+q=start;
+while(q->link->link!=NULL)
+{
+if(q->link->info==data)
+{
+tmp=q->link;
+q->link=tmp->link;
+free(tmp);
+return;
+}
+q=q->link;
+}
+if(q->link->info==data)
+{
+tmp=q->link;
+free(tmp);
+q->link=NULL;
+return;
+}
+printf("Node not found");
+}
+
+}
